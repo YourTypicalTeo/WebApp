@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Σύνδεση με το αρχείο style.css που βρίσκεται στο φάκελο css -->
+  <link rel="stylesheet" href="css/style.css" />
+  <meta charset="UTF-8" />
+  <title>Create New Topic</title>
+</head>
+<body>
+  <h2>Create New Topic</h2>
+  <form id="topicForm">
+    <!-- Πεδία φόρμας για όνομα και περιγραφή θέματος -->
+    <label for="name">Topic Name:</label>
+    <input type="text" id="name" name="name" required />
+
+    <label for="description">Description:</label>
+    <textarea id="description" name="description" rows="4"></textarea>
+
+    <button type="submit">Create Topic</button>
+  </form>
+  
+  <!-- Περιοχή εμφάνισης μηνυμάτων -->
+  <div id="message"></div>
+
+  <script>
+    // Παίρνουμε τη φόρμα και το div για τα μηνύματα
+    const form = document.getElementById('topicForm');
+    const messageDiv = document.getElementById('message');
+
+    // Όταν υποβληθεί η φόρμα
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault(); // Αποτρέπουμε το default submit
+
+      // Παίρνουμε τις τιμές από τα πεδία της φόρμας
+      const name = form.name.value.trim();
+      const description = form.description.value.trim();
+
+      // Απλός έλεγχος αν το topic name είναι empty 
+      if (!name) {
+        messageDiv.style.color = 'red';
+        messageDiv.textContent = "Topic name is required.";
+        return;
+      }
+
+      try {
+        // Στέλνουμε POST αίτημα στο servlet topicService με JSON 
+        const resp = await fetch('topicService', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, description })
+        });
+
+        // Αν ο χρήστης δεν είναι συνδεδεμένος, ανακατεύθυνση στη σελίδα login
+        if (resp.status === 401) {
+          window.location.href = 'login.html';
+          return;
+        }
+
+        // Παίρνουμε την απάντηση JSON από το backend
+        const result = await resp.json();
+
+        // Αν ήταν επιτυχής η δημιουργία θέματος
+        if (result.success) {
+          messageDiv.style.color = 'green';
+          messageDiv.textContent = "Topic created successfully!";
+          form.reset(); // Καθαρίζουμε
+        } else {
+          // Εμφανίζουμε μήνυμα λάθους από το backend ή γενικό μήνυμα
+          messageDiv.style.color = 'red';
+          messageDiv.textContent = result.error || "Error creating topic.";
+        }
+      } catch (err) {
+        // Αν υπάρχει πρόβλημα δικτύου η server
+        messageDiv.style.color = 'red';
+        messageDiv.textContent = "Network or server error.";
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee
+                             https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+         version="6.0">
+  
+  <welcome-file-list>
+    <welcome-file>login.html</welcome-file>
+  </welcome-file-list>
+
+  <session-config>
+    <session-timeout>30</session-timeout>
+  </session-config>
+
+  <servlet>
+    <servlet-name>LoginServlet</servlet-name>
+    <servlet-class>com.example.forum.LoginServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LoginServlet</servlet-name>
+    <url-pattern>/login</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>MessageServlet</servlet-name>
+    <servlet-class>com.example.forum.MessageServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MessageServlet</servlet-name>
+    <url-pattern>/message</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>ChangePasswordServlet</servlet-name>
+    <servlet-class>com.example.forum.ChangePasswordServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ChangePasswordServlet</servlet-name>
+    <url-pattern>/changePassword</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>TopicServiceServlet</servlet-name>
+    <servlet-class>com.example.forum.TopicServiceServlet</servlet-class>
+  </servlet>
+<servlet-mapping>
+  <servlet-name>TopicServiceServlet</servlet-name>
+  <url-pattern>/topicService</url-pattern>
+</servlet-mapping>
+
+<filter>
+    <filter-name>AuthFilter</filter-name>
+    <filter-class>com.example.forum.AuthFilter</filter-class>
+</filter>
+<filter-mapping>
+    <filter-name>AuthFilter</filter-name>
+    <url-pattern>/topic.html</url-pattern>
+</filter-mapping>
+
+<filter-mapping>
+    <filter-name>AuthFilter</filter-name>
+    <url-pattern>/changePassword.html</url-pattern>
+</filter-mapping>
+</web-app>

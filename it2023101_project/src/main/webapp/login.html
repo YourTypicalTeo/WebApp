@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Login</title>
+    <!-- link για to style.css preset που είναι στο webapp/css/style.css -->
+    <link rel="stylesheet" href="css/style.css" /> 
+    <script>
+        // Απλή επικύρωση φόρμας για να ελέγξουμε ότι έχουν συμπληρωθεί τα πεδία
+        function validateLogin() {
+            const uname = document.getElementById("uname").value.trim();
+            const upass = document.getElementById("upass").value.trim();
+
+            if (!uname || !upass) {
+                alert("Πρέπει να συμπληρώσετε όνομα χρήστη και κωδικό.");
+                return false;
+            }
+            return true;
+        }
+    </script>
+</head>
+<body>
+    <h2>Login</h2>
+
+    <!-- Φόρμα σύνδεσης -->
+    <form action="login" method="post" onsubmit="return validateLogin()">
+        <!--όνομα χρήστη -->
+        <label for="uname">Username:</label>
+        <input type="text" id="uname" name="uname" required />
+
+        <!--κωδικό πρόσβασης -->
+        <label for="upass">Password:</label>
+        <input type="password" id="upass" name="upass" required />
+
+        <!-- Κουμπί υποβολής της φόρμας -->
+        <button type="submit">Login</button>
+    </form>
+</body>
+</html>
